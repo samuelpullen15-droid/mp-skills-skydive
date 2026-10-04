@@ -69,3 +69,14 @@ Side effects happen inline as decisions crystallize; call the Skill tool with "d
 - **Sharpening a fuzzy term during the conversation?** Update `GLOSSARY.md` right there.
 - **User rejects the candidate with a load-bearing reason?** Offer an ADR, framed as: _"Want me to record this as an ADR so future architecture reviews don't re-suggest it?"_ Only offer when the reason would actually be needed by a future explorer to avoid re-suggesting the same thing; skip ephemeral reasons ("not worth it right now") and self-evident ones.
 - **Want to explore alternative interfaces for the deepened module?** Call the Skill tool with "codebase-design" and use its design-it-twice parallel sub-agent pattern.
+
+
+---
+
+## Skydive adaptation (DesignSpark Studio fork)
+
+In this Skydive environment:
+- There is no cross-skill "Skill tool". When this skill says "Call the Skill tool with X", instead READ the referenced skill's `SKILL.md` directly (e.g. `~/.pi/agent/skills/X/SKILL.md`) and apply it.
+- Subagents spawn with the Skydive `subagent` tool: `subagent({ tasks: [{ task, title, persona?, model?, timeoutMinutes? }] })`. Run implementers in background (default) for concurrency; each runs in its own sandbox. Shared scratch notes: each worker commits notes to its own sandbox and returns key findings inline in its result, OR you pre-clone the repo into a known path and pass the path in the brief. There is no shared filesystem across workers.
+- Steering a running subagent: `platform conversations post <id> --message "..."`; inspect: `platform conversations show <id>`.
+- The repo-config skill (setup-matt-pocock-skills) maps to: issue tracker = the team's Notion MoveTogether Engineering database; triage labels per the team's bug-flow SOP; GLOSSARY.md/ADRs live in the repo root of the project being worked.
